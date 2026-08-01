@@ -292,36 +292,6 @@ h1 {
   font-size: var(--label); letter-spacing: 0.16em; text-transform: uppercase;
 }
 
-/* ---------- roles ---------- */
-
-.roles { list-style: none; margin: 0; padding: 0; counter-reset: r; }
-
-.roles li {
-  counter-increment: r;
-  padding: 1.9rem 0;
-  border-bottom: 1px solid var(--rule);
-}
-.roles li:first-child { border-top: 1px solid var(--rule); }
-
-.roles h3 {
-  margin: 0 0 0.35rem;
-  font-family: var(--display);
-  font-weight: 400;
-  font-size: clamp(1.75rem, 4.6vw, 2.9rem);
-  line-height: 1.05;
-  letter-spacing: -0.015em;
-}
-.roles h3::before {
-  content: counter(r, decimal-leading-zero);
-  font-family: var(--sans);
-  font-size: 0.7rem;
-  letter-spacing: 0.16em;
-  color: var(--grey);
-  vertical-align: 0.9em;
-  margin-right: 0.85rem;
-}
-.roles p { margin: 0; max-width: 46ch; color: var(--grey); }
-
 /* ---------- gallery ----------
    Stands in for the React/ogl CircularGallery: native horizontal scrolling
    with snap, and the curved arc from a scroll-driven animation. No WebGL. */
@@ -464,8 +434,6 @@ html:not(.gl) .gallery__gl { display: none; }
   transition: opacity 0.9s ease, transform 0.9s cubic-bezier(.2,.7,.2,1);
 }
 .js .reveal.in { opacity: 1; transform: none; }
-.js .roles li:nth-child(2) { transition-delay: 0.08s; }
-.js .roles li:nth-child(3) { transition-delay: 0.16s; }
 
 @media print {
   .bar, .skip { display: none; }

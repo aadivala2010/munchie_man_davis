@@ -9,7 +9,10 @@
  *   1. Pointer/wheel listeners are scoped to the container, not window.
  *   2. Images are desaturated in the fragment shader (brand is black & white).
  *   3. The render loop pauses when the gallery is off-screen.
- * Everything else — the bend maths, the shaders, the infinite wrap — is theirs.
+ *   4. There are exactly 4 posters, not an endless stream: no duplicated
+ *      list, no infinite wraparound, no per-vertex ripple. Scroll is clamped
+ *      to the 4 items and starts centred on them, on the curve.
+ * Everything else — the bend maths, the shaders — is theirs.
  *
  * ogl is vendored at vendor/ogl.js (Unlicense). Regenerate with:
  *   npx esbuild --bundle --format=esm --minify --outfile=vendor/ogl.js entry.js
@@ -105,7 +108,6 @@ class Title {
 class Media {
   constructor({ geometry, gl, image, index, length, renderer, scene, screen, text,
                 viewport, bend, textColor, borderRadius = 0, font }) {
-    this.extra = 0;
     this.geometry = geometry;
     this.gl = gl;
     this.image = image;
@@ -136,14 +138,10 @@ class Media {
         attribute vec2 uv;
         uniform mat4 modelViewMatrix;
         uniform mat4 projectionMatrix;
-        uniform float uTime;
-        uniform float uSpeed;
         varying vec2 vUv;
         void main() {
           vUv = uv;
-          vec3 p = position;
-          p.z = (sin(p.x * 4.0 + uTime) * 1.5 + cos(p.y * 2.0 + uTime) * 1.5) * (0.1 + uSpeed * 0.5);
-          gl_Position = projectionMatrix * modelViewMatrix * vec4(p, 1.0);
+          gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
         }
       `,
       fragment: `
@@ -187,8 +185,6 @@ class Media {
         tMap: { value: texture },
         uPlaneSizes: { value: [0, 0] },
         uImageSizes: { value: [0, 0] },
-        uSpeed: { value: 0 },
-        uTime: { value: 100 * Math.random() },
         uBorderRadius: { value: this.borderRadius }
       },
       transparent: true
@@ -215,8 +211,8 @@ class Media {
       font: this.font
     });
   }
-  update(scroll, direction) {
-    this.plane.position.x = this.x - scroll.current - this.extra;
+  update(scroll) {
+    this.plane.position.x = this.x - scroll.current;
 
     const x = this.plane.position.x;
     const H = this.viewport.width / 2;
@@ -238,23 +234,6 @@ class Media {
         this.plane.rotation.z = Math.sign(x) * Math.asin(effectiveX / R);
       }
     }
-
-    this.speed = scroll.current - scroll.last;
-    this.program.uniforms.uTime.value += 0.04;
-    this.program.uniforms.uSpeed.value = this.speed;
-
-    const planeOffset = this.plane.scale.x / 2;
-    const viewportOffset = this.viewport.width / 2;
-    this.isBefore = this.plane.position.x + planeOffset < -viewportOffset;
-    this.isAfter = this.plane.position.x - planeOffset > viewportOffset;
-    if (direction === 'right' && this.isBefore) {
-      this.extra -= this.widthTotal;
-      this.isBefore = this.isAfter = false;
-    }
-    if (direction === 'left' && this.isAfter) {
-      this.extra += this.widthTotal;
-      this.isBefore = this.isAfter = false;
-    }
   }
   onResize({ screen, viewport } = {}) {
     if (screen) this.screen = screen;
@@ -265,12 +244,24 @@ class Media {
       }
     }
     this.scale = this.screen.height / 1500;
-    this.plane.scale.y = (this.viewport.height * (900 * this.scale)) / this.screen.height;
-    this.plane.scale.x = (this.viewport.width * (700 * this.scale)) / this.screen.width;
-    this.plane.program.uniforms.uPlaneSizes.value = [this.plane.scale.x, this.plane.scale.y];
+    let scaleY = (this.viewport.height * (900 * this.scale)) / this.screen.height;
+    let scaleX = (this.viewport.width * (700 * this.scale)) / this.screen.width;
     this.padding = 2;
+
+    // CHANGED: the size above is height-only, which assumes there's always
+    // plenty of width to spare. On a narrow/tall screen it isn't — cap width
+    // so `length` posters plus padding always fit the viewport, uncropped.
+    const maxScaleX = (this.viewport.width * 0.92) / this.length - this.padding;
+    if (scaleX > maxScaleX) {
+      const shrink = Math.max(maxScaleX, 0.01) / scaleX;
+      scaleX *= shrink;
+      scaleY *= shrink;
+    }
+
+    this.plane.scale.y = scaleY;
+    this.plane.scale.x = scaleX;
+    this.plane.program.uniforms.uPlaneSizes.value = [this.plane.scale.x, this.plane.scale.y];
     this.width = this.plane.scale.x + this.padding;
-    this.widthTotal = this.width * this.length;
     this.x = this.width * this.index;
   }
 }
@@ -288,8 +279,19 @@ class App {
     this.onResize();
     this.createGeometry();
     this.createMedias(items, bend, textColor, borderRadius, font);
+    // CHANGED: start centred on the 4 posters, not at the edge of the list —
+    // this is a fixed set to look at, not a stream to scroll from the start of.
+    this.scroll.current = this.scroll.target = this.maxScroll() / 2;
     this.update();
     this.addEventListeners();
+  }
+  // CHANGED: no infinite wrap, so scrolling has real ends — clamp to them so
+  // a drag or arrow key can't push a poster half off the edge.
+  maxScroll() {
+    return this.medias && this.medias[0] ? this.medias[0].width * (this.medias.length - 1) : 0;
+  }
+  clampScroll(value) {
+    return Math.max(0, Math.min(this.maxScroll(), value));
   }
   createRenderer() {
     this.renderer = new Renderer({
@@ -313,9 +315,9 @@ class App {
     this.planeGeometry = new Plane(this.gl, { heightSegments: 50, widthSegments: 100 });
   }
   createMedias(items, bend = 1, textColor, borderRadius, font) {
-    // CHANGED: no picsum placeholders. This gallery is only ever built from
-    // real posters passed in; without them there is nothing to show.
-    this.mediasImages = items.concat(items);
+    // CHANGED: no picsum placeholders, and no doubled list for an infinite
+    // wrap. There are exactly 4 posters; show exactly 4.
+    this.mediasImages = items;
     this.medias = this.mediasImages.map((data, index) => new Media({
       geometry: this.planeGeometry,
       gl: this.gl,
@@ -342,7 +344,7 @@ class App {
     if (!this.isDown) return;
     const x = e.touches ? e.touches[0].clientX : e.clientX;
     const distance = (this.start - x) * (this.scrollSpeed * 0.025);
-    this.scroll.target = this.scroll.position + distance;
+    this.scroll.target = this.clampScroll(this.scroll.position + distance);
   }
   onTouchUp() {
     this.isDown = false;
@@ -354,19 +356,19 @@ class App {
     // page spins the gallery.
     if (Math.abs(e.deltaX) <= Math.abs(e.deltaY)) return;
     e.preventDefault();
-    this.scroll.target += (e.deltaX > 0 ? this.scrollSpeed : -this.scrollSpeed) * 0.2;
+    this.scroll.target = this.clampScroll(this.scroll.target + (e.deltaX > 0 ? this.scrollSpeed : -this.scrollSpeed) * 0.2);
     this.onCheckDebounce();
   }
   onKeyDown(e) {
     switch (e.key) {
       case 'ArrowRight':
         e.preventDefault();
-        this.scroll.target += this.scrollSpeed * 5;
+        this.scroll.target = this.clampScroll(this.scroll.target + this.scrollSpeed * 5);
         this.onCheckDebounce();
         break;
       case 'ArrowLeft':
         e.preventDefault();
-        this.scroll.target -= this.scrollSpeed * 5;
+        this.scroll.target = this.clampScroll(this.scroll.target - this.scrollSpeed * 5);
         this.onCheckDebounce();
         break;
       case 'Home':
@@ -399,8 +401,7 @@ class App {
   }
   update() {
     this.scroll.current = lerp(this.scroll.current, this.scroll.target, this.scroll.ease);
-    const direction = this.scroll.current > this.scroll.last ? 'right' : 'left';
-    if (this.medias) this.medias.forEach(media => media.update(this.scroll, direction));
+    if (this.medias) this.medias.forEach(media => media.update(this.scroll));
     this.renderer.render({ scene: this.scene, camera: this.camera });
     this.scroll.last = this.scroll.current;
     this.raf = window.requestAnimationFrame(this.update.bind(this));
@@ -466,8 +467,7 @@ function webglAvailable() {
 }
 
 // The head script already decided, before first paint, whether the carousel or
-// the plain list is in the layout — it ruled out no-JS and reduced-motion (the
-// shader wobbles continuously, which is what that setting asks us not to do).
+// the plain list is in the layout — it ruled out no-JS and reduced-motion.
 // All that's left is the rare machine with no WebGL: drop the class and the
 // CSS puts the list back.
 const root = document.documentElement;
