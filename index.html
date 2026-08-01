@@ -24,15 +24,10 @@
 <link rel="stylesheet" href="styles.css">
 
 <script>
-// Must run before first paint, or the hero renders visible and then flickers
-// out, and the gallery swap shifts the page.
+// Must run before first paint, or the hero (and everything else marked
+// .reveal) renders visible and then flickers into its fade-up start state.
 if (window.IntersectionObserver && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
-  var root = document.documentElement;
-  root.classList.add('js');
-  // Claim the carousel's space now so CSS never renders the fallback list and
-  // then replace it. Optimistic — WebGL is near-universal — and gallery.js
-  // drops the class on the rare machine without it.
-  root.classList.add('gl');
+  document.documentElement.classList.add('js');
 }
 </script>
 
@@ -163,34 +158,23 @@ if (window.IntersectionObserver && !matchMedia('(prefers-reduced-motion: reduce)
       <h2 class="reveal">From the pop-ups</h2>
     </div>
 
-    <!-- CircularGallery renders here. gallery.js reads the posters out of the
-         list below, then hides it and mounts the WebGL canvas. The list stays
-         in the HTML as the no-JS / no-WebGL / reduced-motion fallback. -->
-    <div class="gallery__gl" tabindex="0" role="group"
-         aria-label="Pop-up posters. Drag, or use the left and right arrow keys."></div>
-
-    <!-- tabindex makes the scroller keyboard-operable: arrow keys scroll it. -->
-    <ul class="gallery__track" tabindex="0"
-        aria-label="Posters from the Munchie Man pop-ups — scroll sideways to see more">
-      <li data-label="Rice Bowl">
+    <!-- Static collage. No script, no scroll, no captions — just the 4 posters. -->
+    <ul class="collage">
+      <li>
         <img src="assets/poster-ricebowl.webp" width="1100" height="1107" loading="lazy"
              alt="Hand-drawn poster: the Munchie Man holding a knife and a fish, advertising a $7 bún thịt nướng lemongrass pork rice bowl at SoCal's Tavern on 09.16.24.">
-        <p>Bún thịt nướng rice bowl &mdash; 09.16.24</p>
       </li>
-      <li data-label="Munchie Mondays">
+      <li>
         <img src="assets/poster-mondays.webp" width="1100" height="1438" loading="lazy"
              alt="Hand-drawn poster for Munchie Mondays at SoCal's Tavern: munchies by the Munchie Man, Christopher Fairman, $10 a plate, 6pm, football on the TV.">
-        <p>Munchie Mondays &mdash; SoCal's Tavern</p>
       </li>
-      <li data-label="Jerk Chicken">
+      <li>
         <img src="assets/poster-jerk.webp" width="1100" height="1463" loading="lazy"
              alt="Hand-drawn poster: $10, Munchie Man at SoCal's Tavern on 9.11.25 — jerk chicken, collard greens, rice and peas, 6 to 9pm — with a rooster drawn beside it.">
-        <p>Jerk chicken, collard greens, rice &amp; peas &mdash; 9.11.25</p>
       </li>
-      <li data-label="Sold Out">
+      <li>
         <img src="assets/poster-soldout.webp" width="1100" height="1097" loading="lazy"
              alt="Hand-drawn note: the Munchie Man with a “sold out!” speech bubble, beside a handwritten thank-you explaining they prep 30 to 40 servings each week.">
-        <p>Sold out again &mdash; a thank-you note</p>
       </li>
     </ul>
   </section>
@@ -198,9 +182,8 @@ if (window.IntersectionObserver && !matchMedia('(prefers-reduced-motion: reduce)
   <section class="spread" id="roles">
     <div class="spread__label"><span class="num">02</span><h2>Open roles</h2></div>
     <div class="spread__body">
-      <!-- EDIT ME: update once specific roles are locked in. -->
-      <p class="reveal">Hiring all positions — line cooks, front of house,
-         shift leads. Full and part time, in on the ground floor.</p>
+      <p class="reveal">Hiring all positions. Full and part time, in on the
+         ground floor.</p>
     </div>
   </section>
 
@@ -239,7 +222,5 @@ if (document.documentElement.classList.contains('js')) {
   document.querySelectorAll('.reveal').forEach(function (el) { io.observe(el); });
 }
 </script>
-
-<script type="module" src="gallery.js"></script>
 </body>
 </html>

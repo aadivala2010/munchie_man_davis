@@ -293,8 +293,7 @@ h1 {
 }
 
 /* ---------- gallery ----------
-   Stands in for the React/ogl CircularGallery: native horizontal scrolling
-   with snap, and the curved arc from a scroll-driven animation. No WebGL. */
+   A static collage of the 4 posters. No script, no scroll, no motion. */
 
 .gallery {
   padding-top: var(--gap);
@@ -312,83 +311,36 @@ h1 {
   font-size: var(--label); font-weight: 400;
   letter-spacing: 0.18em; text-transform: uppercase;
 }
-/* Exactly one of these two is in the layout, decided before first paint by the
-   class the head script sets — so the page never renders one and swap in the
-   other. No JS / no WebGL / reduced-motion all fall through to the list. */
-.gl .gallery__track { display: none; }
-html:not(.gl) .gallery__gl { display: none; }
 
-/* CircularGallery's WebGL canvas. Needs an explicit height — the component
-   sizes its camera from the container's clientHeight. */
-.gallery__gl {
-  height: clamp(24rem, 62vh, 38rem);
-  margin-top: clamp(1.5rem, 4vh, 3rem);
-  cursor: grab;
-  touch-action: pan-y;   /* let the page still scroll vertically over it */
-}
-.gallery__gl:active { cursor: grabbing; }
-.gallery__gl canvas { display: block; }
-
-.gallery__track {
+.collage {
   display: flex;
-  gap: clamp(1rem, 3vw, 2.25rem);
-  margin: clamp(2.25rem, 5vh, 3.5rem) 0 0;
-  /* vertical padding leaves room for the arc dip, so tilting never overflows
-     and provokes a stray vertical scrollbar */
-  padding: 2.5rem var(--pad) var(--gap);
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
   list-style: none;
-  overflow-x: auto;
-  overscroll-behavior-x: contain;
-  scroll-snap-type: x proximity;
-  scrollbar-width: none;
+  max-width: 60rem;
+  margin: clamp(2.5rem, 6vh, 4rem) auto clamp(3rem, 7vh, 5rem);
+  padding: 0 var(--pad);
 }
-.gallery__track::-webkit-scrollbar { display: none; }
-.gallery__track > li {
-  flex: 0 0 min(74vw, 21rem);
-  scroll-snap-align: center;
+.collage li {
+  width: clamp(8rem, 19vw, 14rem);
+  margin: 0 clamp(-2.5rem, -3vw, -1rem);
+  box-shadow: 0 1.2rem 2.5rem rgba(20, 17, 15, 0.18);
 }
-
-.gallery__track img {
+.collage img {
+  display: block;
   width: 100%;
-  height: clamp(15rem, 40vh, 25rem);
-  object-fit: cover;
-  background: var(--rule);   /* placeholder tint while lazy-loading */
+  height: auto;
   /* grayscale unifies posters shot on wood with those shot on paper, and keeps
      the page to the black/white/grey palette */
   filter: grayscale(1);
-  transition: filter 0.6s ease;
-}
-.gallery__track li:hover img,
-.gallery__track li:focus-within img { filter: grayscale(0); }
-
-.gallery__track p {
-  margin: 1rem 0 0;
-  color: var(--grey);
-  font-size: var(--label); letter-spacing: 0.13em; text-transform: uppercase;
-  line-height: 1.7;
 }
 
-/* The arc. Each poster tilts and dips as it crosses the scroller, upright at
-   centre — the "bend" of the original component, done by the browser.
-   Longhands, not the `animation` shorthand: the shorthand resets
-   animation-duration to 0s, which stops a timeline-driven animation dead. */
-@supports (animation-timeline: view(x)) {
-  .gallery__track > li {
-    animation-name: arc;
-    animation-duration: auto;
-    animation-timing-function: linear;
-    animation-fill-mode: both;
-    animation-timeline: view(x);
-  }
-  @keyframes arc {
-    0%   { transform: translateY(1.5rem) rotate(3.5deg); }
-    50%  { transform: translateY(0)      rotate(0deg); }
-    100% { transform: translateY(1.5rem) rotate(-3.5deg); }
-  }
-  @media (prefers-reduced-motion: reduce) {
-    .gallery__track > li { animation-name: none; }
-  }
-}
+/* Hand-set scatter — fixed, not computed, since it's exactly these 4 posters. */
+.collage li:nth-child(1) { transform: rotate(-6deg) translateY(0.6rem);  z-index: 2; }
+.collage li:nth-child(2) { transform: rotate(4deg)  translateY(-1rem);   z-index: 3; }
+.collage li:nth-child(3) { transform: rotate(-3deg) translateY(1rem);    z-index: 1; }
+.collage li:nth-child(4) { transform: rotate(6deg)  translateY(-0.4rem); z-index: 4; }
 
 /* ---------- apply ---------- */
 
