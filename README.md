@@ -4,16 +4,21 @@ Static site. No build step, no dependencies, no framework. Open the `.html`
 files in any text editor, save, re-upload. That's the whole workflow.
 
 ```
-index.html                  Join Our Team (the only live page in August)
+index.html                  redirect stub → /hiring/ (until the main site exists)
+hiring/index.html           Join Our Team — the only real page in August
 styles.css                  all styling
-gallery.js                  CircularGallery (React Bits), running without React
-vendor/ogl.js               the WebGL library it needs — vendored, don't edit
 assets/logo.png             header mark, cropped to the ink
 assets/coming-soon.png      hero artwork
 assets/poster-*.webp        the four pop-up posters in the gallery
 assets/paths.svg            animated hero background. Self-animating via CSS
                             inside the file — edit `stroke` there to recolour.
 ```
+
+`munchiemandavis.com/hiring/` is the permanent URL for the hiring page — any
+link shared to it now keeps working after the main site launches. The root
+`index.html` is just a placeholder that bounces `/` to `/hiring/`; in
+September it gets replaced with the real homepage, and `hiring/index.html`
+doesn't move.
 
 The originals the client supplied (`Munchie Man Logo.png`, `coming soon.png`,
 `img1-3.png`, `Screenshot ....png`) are left untouched alongside them. Keep

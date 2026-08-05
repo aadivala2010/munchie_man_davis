@@ -10,7 +10,7 @@ import sys
 from html.parser import HTMLParser
 
 ROOT = pathlib.Path(__file__).parent
-PAGES = sorted(ROOT.glob("*.html"))
+PAGES = sorted(ROOT.rglob("*.html"))
 SHEETS = sorted(ROOT.glob("*.css"))
 SCRIPTS = sorted(ROOT.glob("*.js"))
 REMOTE = re.compile(r"(https?:|mailto:|tel:|data:|//)")
