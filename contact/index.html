@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Contact — Munchie Man, Davis CA</title>
+<meta name="description" content="Get in touch with Munchie Man in Davis, CA — email, Instagram, or the contact form below.">
+<link rel="canonical" href="https://munchiemandavis.com/contact/">
+<meta name="theme-color" content="#f7f5f1">
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="Contact — Munchie Man">
+<meta property="og:description" content="Get in touch with Munchie Man in Davis, CA.">
+<meta property="og:image" content="https://munchiemandavis.com/assets/coming-soon.png">
+<meta property="og:url" content="https://munchiemandavis.com/contact/">
+<meta name="twitter:card" content="summary_large_image">
+
+<link rel="icon" href="/assets/logo.png">
+<link rel="apple-touch-icon" href="/assets/logo.png">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&display=swap">
+<link rel="stylesheet" href="/styles.css">
+
+<script>
+document.documentElement.classList.add('has-js');
+if (window.IntersectionObserver && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+  document.documentElement.classList.add('js');
+}
+</script>
+</head>
+<body>
+<header class="bar">
+  <a class="bar__mark" href="/" aria-label="Munchie Man — home">
+    <img src="/assets/logo.png" width="760" height="1120" alt="">
+    <span>Munchie&nbsp;Man</span>
+  </a>
+  <button class="bar__toggle" type="button" aria-expanded="false" aria-controls="site-nav" aria-label="Menu">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true" focusable="false">
+      <path d="M3 6h18M3 12h18M3 18h18"/>
+    </svg>
+  </button>
+  <nav aria-label="Primary" id="site-nav">
+    <a href="/">Home</a>
+    <a href="/about/">About</a>
+    <a href="/menu/">Menu</a>
+    <a href="/visit/">Visit Us</a>
+    <a href="/contact/" aria-current="page">Contact</a>
+    <a href="/hiring/">Join Our Team</a>
+  </nav>
+</header>
+
+<main>
+  <section class="spread">
+    <div class="spread__label"><span class="num">—</span><h1>Contact</h1></div>
+    <div class="spread__body">
+      <p class="reveal">
+        Questions, catering, press, or just want to say hi before we open —
+        reach Christopher directly.
+      </p>
+      <p class="cta reveal">
+        <a class="btn" href="mailto:MunchieManDavis@gmail.com">MunchieManDavis@gmail.com</a>
+        <a class="btn btn--quiet" href="https://instagram.com/MunchieManDavis" target="_blank" rel="noopener">DM us on Instagram</a>
+      </p>
+
+      <form class="form reveal" id="contact-form">
+        <label class="field">
+          <span>Name</span>
+          <input type="text" name="name" required>
+        </label>
+        <label class="field">
+          <span>Email</span>
+          <input type="email" name="email" required>
+        </label>
+        <label class="field">
+          <span>Message</span>
+          <textarea name="message" required></textarea>
+        </label>
+        <p class="form__hint">Sends by opening your email app, addressed to MunchieManDavis@gmail.com.</p>
+        <button class="btn" type="submit">Send Message</button>
+      </form>
+    </div>
+  </section>
+</main>
+
+<footer class="foot">
+  <p class="foot__where">Munchie&nbsp;Man<br>113 D St, Davis, CA</p>
+  <p class="foot__legal">&copy; 2026 Munchie Man.</p>
+</footer>
+
+<script>
+if (document.documentElement.classList.contains('js')) {
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) {
+      if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+    });
+  }, { rootMargin: '0px 0px -8%' });
+  document.querySelectorAll('.reveal').forEach(function (el) { io.observe(el); });
+}
+
+var navToggle = document.querySelector('.bar__toggle');
+var siteNav = document.getElementById('site-nav');
+if (navToggle && siteNav) {
+  navToggle.addEventListener('click', function () {
+    var open = siteNav.classList.toggle('is-open');
+    navToggle.setAttribute('aria-expanded', String(open));
+  });
+}
+
+// No backend on a static site, so "sending" means handing off to the
+// visitor's own email app with the fields already filled in.
+var form = document.getElementById('contact-form');
+if (form) {
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    var name = form.name.value, email = form.email.value, message = form.message.value;
+    var subject = 'Message from munchiemandavis.com';
+    var body = 'Name: ' + name + '\nEmail: ' + email + '\n\n' + message;
+    window.location.href = 'mailto:MunchieManDavis@gmail.com?subject=' +
+      encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
+  });
+}
+</script>
+</body>
+</html>

@@ -127,6 +127,13 @@ a { color: inherit; }
   .bar__mark span { display: none; }
 }
 
+.bar nav {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: clamp(1rem, 2.5vw, 1.8rem);
+}
+
 .bar nav a {
   color: var(--grey);
   padding-bottom: 2px;
@@ -134,6 +141,40 @@ a { color: inherit; }
   transition: color 0.25s, border-color 0.25s;
 }
 .bar nav a:hover { color: var(--ink); border-color: var(--ink); }
+.bar nav a[aria-current="page"] { color: var(--ink); border-color: var(--ink); }
+
+.bar__toggle {
+  display: none;
+  align-items: center; justify-content: center;
+  width: var(--tap); height: var(--tap);
+  margin: calc(var(--tap) * -0.28) calc(var(--tap) * -0.28) calc(var(--tap) * -0.28) 0;
+  padding: 0;
+  background: none; border: none; color: var(--ink);
+  cursor: pointer;
+}
+.bar__toggle svg { width: 1.4rem; height: 1.4rem; }
+
+/* Six nav links plus the wordmark stop fitting comfortably below ~64rem —
+   collapse behind a toggle button instead of wrapping mid-bar. Gated on
+   .has-js (set unconditionally, unlike .reveal's .js) so a no-JS visitor
+   still gets the full nav, just wrapped onto multiple lines. */
+@media (max-width: 64rem) {
+  .has-js .bar__toggle { display: flex; }
+  .has-js .bar nav {
+    display: none;
+    position: absolute;
+    top: calc(100% + 0.9rem); right: calc(var(--pad) * -1 + 0.6rem);
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.1rem;
+    min-width: 12rem;
+    padding: 1.2rem 1.4rem;
+    background: var(--paper);
+    border: 1px solid var(--rule);
+    box-shadow: 0 0.8rem 2rem rgba(20, 17, 15, 0.12);
+  }
+  .has-js .bar nav.is-open { display: flex; }
+}
 
 /* ---------- hero ---------- */
 
@@ -243,9 +284,10 @@ h1 {
   color: var(--grey);
   font-size: var(--label); letter-spacing: 0.18em; text-transform: uppercase;
 }
-/* real <h2> so screen-reader users can navigate by section, styled to look
-   like the small label it is */
-.spread__label h2 { font: inherit; margin: 0; }
+/* real heading (h1 on single-topic pages, h2 when a page has several
+   spreads) so screen-reader users can navigate by section — styled to look
+   like the small label it is either way */
+.spread__label h1, .spread__label h2 { font: inherit; margin: 0; }
 .num {
   display: block;
   font-family: var(--display);
@@ -385,6 +427,73 @@ h1 {
 }
 .foot p { margin: 0; }
 .foot__where { line-height: 1.9; color: var(--ink); }
+
+/* ---------- CTA rows, hours, map, forms ---------- (home / visit / contact) */
+
+.cta {
+  display: flex; flex-wrap: wrap; gap: 0.75rem 1rem;
+  margin-top: clamp(2rem, 5vh, 3rem);
+}
+
+.badge {
+  display: inline-block;
+  margin: 0 0 1.25rem;
+  padding: 0.4rem 0.9rem;
+  border: 1px solid var(--ink);
+  font-size: var(--label); letter-spacing: 0.14em; text-transform: uppercase;
+}
+
+.hours {
+  margin: 0 0 1.4em;
+  max-width: 26rem;
+}
+.hours > div {
+  display: flex; justify-content: space-between; gap: 1rem;
+  padding: 0.6rem 0;
+  border-top: 1px solid var(--rule);
+  font-size: clamp(1.05rem, 1.6vw, 1.3rem);
+}
+.hours > div:last-child { border-bottom: 1px solid var(--rule); }
+.hours dt, .hours dd { margin: 0; font-weight: 400; }
+.hours dt { color: var(--grey); }
+
+.map {
+  aspect-ratio: 4 / 3;
+  max-width: 34rem;
+  margin: 0 0 1.75rem;
+  border: 1px solid var(--rule);
+  filter: grayscale(1) contrast(1.05);
+}
+.map iframe { width: 100%; height: 100%; border: 0; display: block; }
+
+.field {
+  display: block;
+  margin: 0 0 1.4rem;
+  max-width: 34rem;
+}
+.field span {
+  display: block;
+  margin-bottom: 0.4rem;
+  color: var(--grey);
+  font-size: var(--label); letter-spacing: 0.14em; text-transform: uppercase;
+}
+.field input, .field textarea {
+  width: 100%;
+  padding: 0.75rem 0.9rem;
+  background: transparent;
+  border: 1px solid var(--rule);
+  color: var(--ink);
+  font: inherit;
+  font-size: 1rem;
+}
+.field input:focus, .field textarea:focus { border-color: var(--ink); }
+.field textarea { resize: vertical; min-height: 8rem; }
+
+.form__hint {
+  margin: -0.6rem 0 1.6rem;
+  color: var(--grey);
+  font-size: var(--label);
+}
 
 /* ---------- reveal ---------- */
 

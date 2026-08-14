@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Menu — Munchie Man, Davis CA</title>
+<meta name="description" content="The Munchie Man menu is coming this fall. Follow @MunchieManDavis for a first look as dishes are announced.">
+<link rel="canonical" href="https://munchiemandavis.com/menu/">
+<meta name="theme-color" content="#f7f5f1">
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="Menu — Munchie Man">
+<meta property="og:description" content="Coming soon. Follow along as the menu comes together.">
+<meta property="og:image" content="https://munchiemandavis.com/assets/coming-soon.png">
+<meta property="og:url" content="https://munchiemandavis.com/menu/">
+<meta name="twitter:card" content="summary_large_image">
+
+<link rel="icon" href="/assets/logo.png">
+<link rel="apple-touch-icon" href="/assets/logo.png">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&display=swap">
+<link rel="stylesheet" href="/styles.css">
+
+<script>
+document.documentElement.classList.add('has-js');
+if (window.IntersectionObserver && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+  document.documentElement.classList.add('js');
+}
+</script>
+</head>
+<body>
+<header class="bar">
+  <a class="bar__mark" href="/" aria-label="Munchie Man — home">
+    <img src="/assets/logo.png" width="760" height="1120" alt="">
+    <span>Munchie&nbsp;Man</span>
+  </a>
+  <button class="bar__toggle" type="button" aria-expanded="false" aria-controls="site-nav" aria-label="Menu">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true" focusable="false">
+      <path d="M3 6h18M3 12h18M3 18h18"/>
+    </svg>
+  </button>
+  <nav aria-label="Primary" id="site-nav">
+    <a href="/">Home</a>
+    <a href="/about/">About</a>
+    <a href="/menu/" aria-current="page">Menu</a>
+    <a href="/visit/">Visit Us</a>
+    <a href="/contact/">Contact</a>
+    <a href="/hiring/">Join Our Team</a>
+  </nav>
+</header>
+
+<main>
+  <section class="spread">
+    <div class="spread__label"><span class="num">—</span><h1>Menu</h1></div>
+    <div class="spread__body">
+      <p class="badge reveal">Coming soon</p>
+      <p class="reveal">
+        The menu is still coming together, the same way everything at Munchie
+        Man does &mdash; a little at a time, with a story behind each dish. It'll
+        be posted here as soon as it's ready.
+      </p>
+      <p class="reveal">
+        In the meantime, the pop-up menus from 2023&ndash;2025 give a sense of
+        where this is headed &mdash; see the <a href="/about/">Our Story</a> page,
+        or follow along on Instagram for the first look.
+      </p>
+      <p class="cta reveal">
+        <a class="btn" href="https://instagram.com/MunchieManDavis" target="_blank" rel="noopener">Follow @MunchieManDavis</a>
+        <a class="btn btn--quiet" href="/visit/">Visit Us</a>
+      </p>
+    </div>
+  </section>
+</main>
+
+<footer class="foot">
+  <p class="foot__where">Munchie&nbsp;Man<br>113 D St, Davis, CA</p>
+  <p class="foot__legal">&copy; 2026 Munchie Man.</p>
+</footer>
+
+<script>
+if (document.documentElement.classList.contains('js')) {
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) {
+      if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+    });
+  }, { rootMargin: '0px 0px -8%' });
+  document.querySelectorAll('.reveal').forEach(function (el) { io.observe(el); });
+}
+
+var navToggle = document.querySelector('.bar__toggle');
+var siteNav = document.getElementById('site-nav');
+if (navToggle && siteNav) {
+  navToggle.addEventListener('click', function () {
+    var open = siteNav.classList.toggle('is-open');
+    navToggle.setAttribute('aria-expanded', String(open));
+  });
+}
+</script>
+</body>
+</html>

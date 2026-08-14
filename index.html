@@ -2,13 +2,225 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="refresh" content="0; url=/hiring/">
-<link rel="canonical" href="https://munchiemandavis.com/hiring/">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Munchie Man — Davis, CA</title>
+<meta name="description" content="Munchie Man is a full-service restaurant opening in downtown Davis, CA this fall — creative comfort food, seasonal ingredients, bold flavors. A pop-up since 2023.">
+<link rel="canonical" href="https://munchiemandavis.com/">
+<meta name="theme-color" content="#f7f5f1">
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="Munchie Man — Davis, CA">
+<meta property="og:description" content="A pop-up since 2023. A room of our own in Davis, opening September 2026.">
+<meta property="og:image" content="https://munchiemandavis.com/assets/coming-soon.png">
+<meta property="og:url" content="https://munchiemandavis.com/">
+<meta name="twitter:card" content="summary_large_image">
+
+<link rel="icon" href="/assets/logo.png">
+<link rel="apple-touch-icon" href="/assets/logo.png">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&display=swap">
+<link rel="stylesheet" href="/styles.css">
+
+<script>
+// Must run before first paint, or the hero (and everything else marked
+// .reveal) renders visible and then flickers into its fade-up start state.
+document.documentElement.classList.add('has-js');
+if (window.IntersectionObserver && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+  document.documentElement.classList.add('js');
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Restaurant",
+  "name": "Munchie Man",
+  "url": "https://munchiemandavis.com/",
+  "image": "https://munchiemandavis.com/assets/coming-soon.png",
+  "description": "Munchie Man opens its first permanent location in Davis, California in 2026. A pop-up since 2023.",
+  "telephone": "+1-530-746-2030",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "113 D St",
+    "addressLocality": "Davis",
+    "addressRegion": "CA",
+    "addressCountry": "US"
+  },
+  "openingHoursSpecification": [
+    {
+      "@type": "OpeningHoursSpecification",
+      "dayOfWeek": ["Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
+      "opens": "11:00",
+      "closes": "23:00"
+    }
+  ],
+  "sameAs": ["https://instagram.com/MunchieManDavis", "https://yelp.to/41w3g4sVF4"],
+  "founder": { "@type": "Person", "name": "Christopher Fairman" }
+}
+</script>
 </head>
 <body>
-<!-- Stub until the main site (home/about/menu/contact) is built. Replace this
-     file with the real homepage then — /hiring/ stays put either way. -->
-<p><a href="/hiring/">Continue to Munchie Man</a></p>
+<a class="skip" href="#visit">Skip to visit info</a>
+
+<header class="bar">
+  <a class="bar__mark" href="/" aria-label="Munchie Man — home">
+    <img src="/assets/logo.png" width="760" height="1120" alt="">
+    <span>Munchie&nbsp;Man</span>
+  </a>
+  <button class="bar__toggle" type="button" aria-expanded="false" aria-controls="site-nav" aria-label="Menu">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true" focusable="false">
+      <path d="M3 6h18M3 12h18M3 18h18"/>
+    </svg>
+  </button>
+  <nav aria-label="Primary" id="site-nav">
+    <a href="/" aria-current="page">Home</a>
+    <a href="/about/">About</a>
+    <a href="/menu/">Menu</a>
+    <a href="/visit/">Visit Us</a>
+    <a href="/contact/">Contact</a>
+    <a href="/hiring/">Join Our Team</a>
+  </nav>
+</header>
+
+<main>
+
+  <section class="hero">
+    <div class="hero__inner">
+      <div class="hero__text">
+        <p class="eyebrow reveal">Davis, California — opening September 2026</p>
+        <h1 class="reveal">Munchie<br>Man</h1>
+        <p class="lede reveal">
+          We're a full-service restaurant serving creative comfort food with a
+          focus on fresh, seasonal ingredients and bold flavors. Pair your meal
+          with a selection from our extensive beer and wine list. Whether it's
+          lunch, dinner, happy hour, or a night out with friends and family, we
+          can't wait to serve the Davis community this fall.
+        </p>
+
+        <p class="cta reveal">
+          <a class="btn" href="/menu/">View Menu</a>
+          <a class="btn btn--quiet" href="/about/">About Us</a>
+          <a class="btn btn--quiet" href="/visit/">Visit Us</a>
+        </p>
+
+        <a class="ig reveal" href="https://instagram.com/MunchieManDavis" target="_blank" rel="noopener"
+           aria-label="Munchie Man on Instagram: @MunchieManDavis">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"
+               stroke-linecap="round" aria-hidden="true" focusable="false">
+            <rect x="3" y="3" width="18" height="18" rx="5.5"/>
+            <circle cx="12" cy="12" r="4.2"/>
+            <circle cx="17.3" cy="6.7" r="1.05" fill="currentColor" stroke="none"/>
+          </svg>
+          <span>@MunchieManDavis</span>
+        </a>
+      </div>
+
+      <img class="hero__art" src="/assets/coming-soon.png" width="900" height="1204" fetchpriority="high"
+           alt="Hand-lettered poster reading “Munchie Man — coming soon to Davis, CA”, with the Munchie Man chef drawn in the middle.">
+    </div>
+  </section>
+
+  <section class="spread" id="about">
+    <div class="spread__label"><span class="num">01</span><h2>Our Story</h2></div>
+    <div class="spread__body">
+      <p class="story__open reveal">Food brings the world together.</p>
+      <p class="reveal">
+        Munchie Man started as a pop-up in 2023 &mdash; more art project than
+        restaurant, built around a character instead of a chef's name, because
+        great hospitality has never been about ego. In 2026 it opens its first
+        home, right in downtown Davis.
+      </p>
+      <p class="cta reveal">
+        <a class="btn btn--quiet" href="/about/">Read Our Story</a>
+      </p>
+    </div>
+  </section>
+
+  <section class="spread" id="visit">
+    <div class="spread__label"><span class="num">02</span><h2>Visit Us</h2></div>
+    <div class="spread__body">
+      <p class="reveal">113 D St, Davis, CA &mdash; street parking and bike racks nearby.</p>
+
+      <dl class="hours reveal">
+        <div><dt>Tue &ndash; Sun</dt><dd>11am &ndash; 11pm</dd></div>
+        <div><dt>Monday</dt><dd>Closed</dd></div>
+      </dl>
+
+      <p class="cta reveal">
+        <a class="btn" href="https://www.google.com/maps?q=113+D+St,+Davis,+CA" target="_blank" rel="noopener">Get Directions</a>
+        <a class="btn btn--quiet" href="tel:+15307462030">530-746-2030</a>
+        <a class="btn btn--quiet" href="/visit/">Full Details</a>
+      </p>
+    </div>
+  </section>
+
+  <section class="spread">
+    <div class="spread__label"><span class="num">03</span><h2>Follow Along</h2></div>
+    <div class="spread__body">
+      <p class="reveal">
+        We're remodeling 113 D St right now &mdash; Instagram is the best way to
+        watch the room come together before we open.
+      </p>
+      <p class="cta reveal">
+        <a class="btn" href="https://instagram.com/MunchieManDavis" target="_blank" rel="noopener">@MunchieManDavis</a>
+        <a class="btn btn--quiet" href="https://yelp.to/41w3g4sVF4" target="_blank" rel="noopener">Find us on Yelp</a>
+      </p>
+    </div>
+  </section>
+
+  <section class="gallery">
+    <div class="gallery__head">
+      <h2 class="reveal">From the pop-ups</h2>
+    </div>
+    <ul class="collage">
+      <li>
+        <img src="/assets/poster-ricebowl.webp" width="1100" height="1107" loading="lazy"
+             alt="Hand-drawn poster: the Munchie Man holding a knife and a fish, advertising a $7 bún thịt nướng lemongrass pork rice bowl at SoCal's Tavern on 09.16.24.">
+      </li>
+      <li>
+        <img src="/assets/poster-mondays.webp" width="1100" height="1438" loading="lazy"
+             alt="Hand-drawn poster for Munchie Mondays at SoCal's Tavern: munchies by the Munchie Man, Christopher Fairman, $10 a plate, 6pm, football on the TV.">
+      </li>
+      <li>
+        <img src="/assets/poster-jerk.webp" width="1100" height="1463" loading="lazy"
+             alt="Hand-drawn poster: $10, Munchie Man at SoCal's Tavern on 9.11.25 — jerk chicken, collard greens, rice and peas, 6 to 9pm — with a rooster drawn beside it.">
+      </li>
+      <li>
+        <img src="/assets/poster-soldout.webp" width="1100" height="1097" loading="lazy"
+             alt="Hand-drawn note: the Munchie Man with a “sold out!” speech bubble, beside a handwritten thank-you explaining they prep 30 to 40 servings each week.">
+      </li>
+    </ul>
+  </section>
+
+</main>
+
+<footer class="foot">
+  <p class="foot__where">Munchie&nbsp;Man<br>113 D St, Davis, CA</p>
+  <p class="foot__legal">&copy; 2026 Munchie Man.</p>
+</footer>
+
+<script>
+// Fade-up on scroll. Only runs if <html> got .js in the head, so no-JS and
+// reduced-motion visitors get the whole page, unhidden and unanimated.
+if (document.documentElement.classList.contains('js')) {
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) {
+      if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+    });
+  }, { rootMargin: '0px 0px -8%' });
+  document.querySelectorAll('.reveal').forEach(function (el) { io.observe(el); });
+}
+
+var navToggle = document.querySelector('.bar__toggle');
+var siteNav = document.getElementById('site-nav');
+if (navToggle && siteNav) {
+  navToggle.addEventListener('click', function () {
+    var open = siteNav.classList.toggle('is-open');
+    navToggle.setAttribute('aria-expanded', String(open));
+  });
+}
+</script>
 </body>
 </html>

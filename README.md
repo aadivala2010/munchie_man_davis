@@ -4,8 +4,12 @@ Static site. No build step, no dependencies, no framework. Open the `.html`
 files in any text editor, save, re-upload. That's the whole workflow.
 
 ```
-index.html                  redirect stub → /hiring/ (until the main site exists)
-hiring/index.html           Join Our Team — the only real page in August
+index.html                  Home
+about/index.html            Our Story
+menu/index.html             Menu — "coming soon" until the real menu lands
+visit/index.html            Visit Us — address, hours, map
+contact/index.html          Contact — email, Instagram, mailto form
+hiring/index.html           Join Our Team
 styles.css                  all styling
 assets/logo.png             header mark, cropped to the ink
 assets/coming-soon.png      hero artwork
@@ -14,11 +18,17 @@ assets/paths.svg            animated hero background. Self-animating via CSS
                             inside the file — edit `stroke` there to recolour.
 ```
 
-`munchiemandavis.com/hiring/` is the permanent URL for the hiring page — any
-link shared to it now keeps working after the main site launches. The root
-`index.html` is just a placeholder that bounces `/` to `/hiring/`; in
-September it gets replaced with the real homepage, and `hiring/index.html`
-doesn't move.
+Each page is its own folder with an `index.html`, so URLs stay clean
+(`/about/`, `/visit/`, etc.) and every one of them is permanent — link to any
+of them and it keeps working as the site grows. There's no shared template:
+the header/nav/footer are copy-pasted at the top and bottom of every page, so
+adding a new page means copying an existing one and editing the middle.
+
+The header nav is the same six links on every page, with the current page
+marked via `aria-current="page"` (styled underlined). Below ~64rem wide it
+collapses behind the hamburger button in the corner — that only happens once
+JS has added `has-js` to `<html>`, so a page with JS disabled just wraps the
+full nav onto multiple lines instead of hiding it.
 
 The originals the client supplied (`Munchie Man Logo.png`, `coming soon.png`,
 `img1-3.png`, `Screenshot ....png`) are left untouched alongside them. Keep
@@ -27,50 +37,35 @@ optimised copies above: 4.7 MB of raw images became 608 KB.
 
 ## The gallery
 
-`gallery.js` is the CircularGallery component from React Bits, with its React
-wrapper removed — the drawing code underneath was already plain JavaScript, so
-the site needs no framework and no build step. It renders a curved, draggable,
-infinitely-looping carousel on a WebGL canvas.
-
-It reads the posters out of the plain `<ul class="gallery__track">` in
-`index.html`, then hides that list. **The list is still the thing you edit** —
-it's also what visitors see if JavaScript is off, WebGL is unavailable, or the
-visitor has asked their system to reduce motion.
+`index.html` and `about/index.html` both end in a static collage — four
+`<li>` posters, hand-rotated with fixed `transform`s in `.collage li:nth-child()`
+in `styles.css`. No script, no scroll, no WebGL; it's just an `<ul>`.
 
 ### Adding a poster
 
 Optimise first — a 1.4 MB phone photo will make the page crawl on mobile.
 Resize to about 1100px wide and save as `.webp`, then copy one `<li>` block
-inside the list and change:
+and change:
 
 - `src` — the new file
 - `width`/`height` — must match the real pixel size, or the page jumps as it loads
 - `alt` — describe the poster for screen readers and search engines
-- `data-label` — the **short** caption drawn under the card in the carousel;
-  keep it to a word or two, long text renders as a very wide strip
-- the `<p>` — the longer caption used in the fallback list
 
-Order in the file is the order on screen.
-
-### Rebuilding vendor/ogl.js
-
-You shouldn't need to. If you ever do:
-
-```
-npm pack ogl && tar xzf ogl-*.tgz
-echo "export { Camera, Mesh, Plane, Program, Renderer, Texture, Transform } from './package/src/index.js';" > entry.js
-npx esbuild --bundle --format=esm --minify --outfile=vendor/ogl.js entry.js
-```
-
-ogl is Unlicense (public domain).
+A 5th poster needs a `.collage li:nth-child(5)` rule in `styles.css` (rotation
++ vertical offset) or it'll sit flat and unstaggered. Order in the file is the
+order on screen. Change the list in both `index.html` and `about/index.html`
+to keep them in sync.
 
 ## Editing content
 
-Everything is in `index.html`. Places to change are marked `EDIT ME`:
+There's no CMS — open the page's `.html` file and edit the text directly.
 
-- **Open roles** — the `<ol class="roles">` list. Delete an `<li>` to pull a role, copy one to add a role.
-- **Hiring email** — appears twice: the `mailto:` link and the visible text next to it. Change both.
-- **Instagram** — search for `MunchieManDavis` (appears in several places: nav, hero, footer, metadata).
+- **Open roles** — `hiring/index.html`, the `<ol class="roles">` list. Delete an `<li>` to pull a role, copy one to add a role.
+- **Menu** — `menu/index.html`. Currently just a "coming soon" note; once there's a real menu, replace the `.spread__body` content with it.
+- **Hours / address / phone** — appear on `index.html`, `visit/index.html`, and in both pages' JSON-LD `<script type="application/ld+json">` blocks. Update all of them together, plus the footer `.foot__where` on every page.
+- **Contact email** — `MunchieManDavis@gmail.com` appears as a `mailto:` link on several pages and as the hardcoded recipient in the contact form's submit script in `contact/index.html`. Change all of them.
+- **Instagram / Yelp** — search for `MunchieManDavis` / `yelp.to` (nav, hero, footer, metadata, across every page).
+- **Christopher's story** — lives verbatim in both `hiring/index.html` (under `#about`) and `about/index.html`. It's meant to match exactly in both places — if you edit one, edit the other the same way.
 
 ## Before you deploy
 
@@ -103,16 +98,9 @@ Any static host works. Recommended, in order of least effort:
 Point the domain at the host and let it issue the HTTPS certificate — do not
 skip HTTPS, browsers flag plain HTTP as insecure.
 
-## September (phase 2)
+## Still needed from the client
 
-The site becomes multi-page: `index.html` (home), `about.html`, `menu.html`,
-`contact.html`, `join.html`. The header nav in each file gets those links plus
-a mobile hamburger. Shared styles already live in `styles.css`.
-
-Still needed from the client before that work starts:
-
-- Final menu (categories, dishes, descriptions, prices)
+- Final menu (categories, dishes, descriptions, prices) — `menu/index.html` is a "coming soon" placeholder until then
 - Food and restaurant photography
-- Street address, phone, opening hours
-- Christopher's About copy
+- Press articles, once they run, for the "As seen in" line on `visit/index.html`
 - Any additional hand-drawn illustrations / past pop-up posters
