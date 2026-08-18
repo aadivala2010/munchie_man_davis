@@ -40,17 +40,7 @@ green. The security certificate (the padlock) is issued automatically, free.
 Check it in a private/incognito window: `munchiemandavis.com`,
 `www.munchiemandavis.com`, and the padlock with no warning.
 
-## 4. Updating the site
-
-Every page is a plain HTML file in the repo — `index.html` for the home page,
-`menu/index.html` for the menu, and so on. Any change saved to GitHub goes live
-automatically within about 30 seconds. No uploading, no other steps.
-
-Your developer will work in these files directly. If you want to fix a typo
-yourself: open the file on GitHub, click the pencil icon, edit the text, and
-click **Commit changes** at the bottom.
-
-## 5. Worth knowing
+## 4. Worth knowing
 
 - Turn on auto-renew for the domain (~$15/year). It's the only recurring cost,
   and a lapsed domain takes the whole site offline.
