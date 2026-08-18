@@ -1,5 +1,9 @@
 # Munchie Man — munchiemandavis.com
 
+> Handing the site over to the client? See **[HANDOFF.md](HANDOFF.md)** —
+> a step-by-step, non-technical procedure for transferring the GitHub
+> repository, the Vercel hosting and the domain into their own accounts.
+
 Static site. No build step, no dependencies, no framework. Open the `.html`
 files in any text editor, save, re-upload. That's the whole workflow.
 
